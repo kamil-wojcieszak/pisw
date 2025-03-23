@@ -10,7 +10,7 @@ body {
   min-width: 240px;
 }
 
-.header {
+header {
   height: 70px;
   background-color: red;
   color: white;

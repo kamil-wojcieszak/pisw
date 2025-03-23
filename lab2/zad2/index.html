@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<title>Zad 2</title>
+<link rel="stylesheet" href="bootstrap.css" />
+<link rel="stylesheet" href="stylesheet.css" />
+
+<script>
+  window.onload = () => {
+    const items = [];
+    let sumVal = 0.0;
+
+    const form = document.getElementById("myForm");
+
+    const name = document.getElementById("nameInput");
+    const width = document.getElementById("widthInput");
+    const height = document.getElementById("heightInput");
+    const depth = document.getElementById("depthInput");
+    const sum = document.getElementById("sum");
+
+    const confirmBtn = document.getElementById("confirmBtn");
+    const clearBtn = document.getElementById("clearBtn");
+    const defaultBtn = document.getElementById("defaultBtn");
+
+    const searchInput = document.getElementById("searchInput");
+    const table = document.getElementById("table");
+    const tbody = document.getElementById("tableBody");
+
+    form.addEventListener("submit", (event) => {
+      const formData = new FormData(form, confirmBtn);
+
+      const name = form.nameInput.value;
+      const width = form.widthInput.value;
+      const height = form.heightInput.value;
+      const depth = form.depthInput.value;
+      const volume = (width * height * depth) / 1000000;
+
+      items.push({
+        name: name,
+        width: width,
+        height: height,
+        depth: depth,
+        volume: volume,
+      });
+
+      const filteredItems = filterItems(items, searchInput.value);
+
+      render(filteredItems);
+
+      event.preventDefault();
+    });
+
+    defaultBtn.addEventListener("click", (event) => {
+      form.nameInput.value = "test";
+      form.widthInput.value = 123;
+      form.heightInput.value = 123;
+      form.depthInput.value = 123;
+    });
+
+    searchInput.addEventListener("input", (event) => {
+      const filteredItems = filterItems(items, searchInput.value);
+      render(filteredItems);
+    });
+
+    const filterItems = (itemsToFilter, filterVal) => {
+      return (filteredItems = itemsToFilter.filter((value) => {
+        return value.name.includes(filterVal);
+      }));
+    };
+
+    const render = (tableItems) => {
+      tbody.innerHTML = "";
+      sumVal = 0;
+      tableItems.forEach((item) => {
+        const newRow = tbody.insertRow();
+        newRow.insertCell().textContent = item.name;
+        newRow.insertCell().textContent = item.width;
+        newRow.insertCell().textContent = item.height;
+        newRow.insertCell().textContent = item.depth;
+        newRow.insertCell().textContent = item.volume.toFixed(2);
+        sumVal += item.volume;
+      });
+      sum.textContent = sumVal.toFixed(2);
+    };
+  };
+</script>
+
+<body>
+  <div class="myContainer">
+    <h1>Please enter package size and dimensions</h1>
+    <form id="myForm">
+      <div class="mb-3">
+        <label class="form-label" for="nameInput">Name</label>
+        <input
+          class="form-control"
+          type="text"
+          name=""
+          id="nameInput"
+          maxlength="20"
+          required
+        />
+      </div>
+      <div class="mb-3">
+        <label class="form-label" for="widthInput">Width</label>
+        <div class="input-group">
+          <input
+            class="form-control"
+            type="number"
+            name=""
+            id="widthInput"
+            max="1000"
+            required
+          />
+          <span class="input-group-text" id="basic-addon3">cm</span>
+        </div>
+      </div>
+      <div class="mb-3">
+        <label class="form-label" for="heightInput">Height</label>
+        <div class="input-group">
+          <input
+            class="form-control"
+            type="number"
+            name=""
+            id="heightInput"
+            max="1000"
+            required
+          />
+          <span class="input-group-text" id="basic-addon3">cm</span>
+        </div>
+      </div>
+      <div class="mb-3">
+        <label class="form-label" for="depthInput">Depth</label>
+        <div class="input-group">
+          <input
+            class="form-control"
+            type="number"
+            name=""
+            id="depthInput"
+            max="1000"
+            required
+          />
+          <span class="input-group-text" id="basic-addon3">cm</span>
+        </div>
+      </div>
+
+      <div>
+        <button class="btn btn-primary" id="confirmBtn" type="submit">
+          Confirm
+        </button>
+        <button class="btn btn-secondary" id="clearBtn" type="reset">
+          Clear
+        </button>
+        <button class="btn btn-secondary" id="defaultBtn" type="button">
+          Default values
+        </button>
+      </div>
+      <hr />
+      <h1>Packages</h1>
+      <div id="search">
+        <input
+          placeholder="search"
+          class="form-control"
+          type="text"
+          id="searchInput"
+          value=""
+          max="1000"
+        />
+      </div>
+      <div>
+        <table class="table" id="table">
+          <thead>
+            <tr>
+              <th scope="col">Name</th>
+              <th scope="col">Width</th>
+              <th scope="col">Height</th>
+              <th scope="col">Depth</th>
+              <th scope="col">Volume</th>
+            </tr>
+          </thead>
+          <tbody id="tableBody"></tbody>
+          <tfoot>
+            <tr>
+              <th></th>
+              <th></th>
+              <th></th>
+              <th>Sum</th>
+              <td id="sum">0</td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </form>
+  </div>
+</body>

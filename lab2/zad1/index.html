@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<title>Zad 1</title>
+<link rel="stylesheet" href="stylesheet.css" />
+
+<script>
+  let circle = {};
+  let circleSlider = {};
+  window.onload = () => {
+    circle = document.getElementById("circle");
+    circleSlider = document.getElementById("circleSlider");
+
+    document.addEventListener("keydown", (e) => {
+      switch (e.key) {
+        case "ArrowLeft":
+          circleMod(circleSlider.valueAsNumber - 1);
+          break;
+        case "ArrowRight":
+          circleMod(circleSlider.valueAsNumber + 1);
+          break;
+      }
+    });
+
+    circleSlider.addEventListener("input", (e) =>
+      circleMod(e.target.valueAsNumber)
+    ),
+      circleMod(circleSlider.valueAsNumber);
+  };
+
+  const circleMod = (size) => {
+    circleSlider.valueAsNumber = size;
+    formattedSize = formatSize(size);
+    circle.style.animation = "3s infinite alternate slide-in"
+    circle.textContent = formattedSize;
+    circle.style.backgroundColor = formatColor(size);
+    setCircleSize(formattedSize);
+  };
+
+  function formatSize(size) {
+    return `${size}px`;
+  }
+
+  function formatColor(size) {
+    return `hsl(0, 100%, ${Math.round((size / (510 * 2)) * 100)}%)`;
+  }
+
+  function setCircleSize(size) {
+    circle.style.width = size;
+    circle.style.height = size;
+  }
+</script>
+
+<body>
+  <input id="circleSlider" type="range" value="10" min="10" max="500" />
+  <div id="circle" class="dot"></div>
+</body>
