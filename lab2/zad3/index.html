@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Zad3</title>
+    <link rel="stylesheet" href="../bootstrap.css" />
+    <link rel="stylesheet" href="stylesheet.css" />
+    <script src="main.js"></script>
+  </head>
+  <body>
+    <div id="container">
+      <aside id="chooseNote">
+        <h1>Notatki</h1>
+        <ul id="noteList">
+        </ul>
+      </aside>
+      <div>
+        <h1 id="action"></h1>
+        <div id="formContainer">
+          <form id="noteForm">
+            <div class="mb-3">
+              <label class="form-label" for="noteTitle"><h1>Title</h1></label>
+              <input
+                class="form-control"
+                type="text"
+                id="noteTitle"
+                maxlength="20"
+                required
+              />
+            </div>
+            <div class="mb-3">
+              <label class="form-label" for="widthInput"><h3>Note</h3></label>
+              <div class="input-group">
+                <textarea
+                  class="form-control"
+                  id="noteContent"
+                  rows="3"
+                ></textarea>
+              </div>
+            </div>
+            <button type="submit">Save</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
