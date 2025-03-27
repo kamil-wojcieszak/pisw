@@ -3,6 +3,13 @@ window.onload = () => {
   const noteTitle = document.getElementById("noteTitle");
   const noteContent = document.getElementById("noteContent");
   const noteList = document.getElementById("noteList");
+  const importInput = document.createElement("input");
+  importInput.type = "file";
+  importInput.accept = ".json";
+  importInput.style.display = "none";
+
+  const exportBtn = document.getElementById("exportBtn");
+  const importBtn = document.getElementById("importBtn");
 
   const action = document.getElementById("action");
 
@@ -11,22 +18,57 @@ window.onload = () => {
 
   let currentNote = undefined;
 
+  exportBtn.addEventListener("click", () => {
+    const notes = getItemsFromLocalStorage();
+    const blob = new Blob([JSON.stringify(notes, null, 2)], {
+      type: "application/json",
+    });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "notes_export.json";
+    a.click();
+  });
+
+  importBtn.addEventListener("click", () => {
+    importInput.click();
+  });
+
+  importInput.addEventListener("change", (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        try {
+          const importedNotes = JSON.parse(event.target.result);
+
+          Object.keys(localStorage).forEach((key) => {
+            localStorage.removeItem(key);
+          });
+
+          importedNotes.forEach((note) => addNoteToLocalStorage(note));
+
+          render();
+
+          alert("Notes imported successfully!");
+        } catch (error) {
+          alert("Error importing notes. Please check the file format.");
+        }
+      };
+      reader.readAsText(file);
+    }
+  });
+
   form.addEventListener("submit", (e) => {
-    switch (urrentNote) {
-      case undefined:
+    if (currentNote === undefined)
+      addNoteToLocalStorage(createNewNote(noteTitle.value, noteContent.value));
+    else {
+      currentNote.title = noteTitle.value;
+      currentNote.content = noteContent.value;
+      addNoteToLocalStorage(currentNote);
+      currentNote = undefined;
     }
-    if (currentNote !== undefined) {
-    } else {
-    }
-    localStorage.setItem(
-      crypto.randomUUID(),
-      JSON.stringify({
-        id: crypto.randomUUID(),
-        title: noteTitle.value,
-        content: noteContent.value,
-        date: Date.now(),
-      })
-    );
+
     render();
     // e.preventDefault();
   });
@@ -45,9 +87,14 @@ window.onload = () => {
     noteList.appendChild(li);
   };
 
-  const createNote(title,content) =>{
-    return {id:x,title:title,content:content,date:Date.now()}
-  }
+  const createNewNote = (title, content) => {
+    return {
+      id: crypto.randomUUID(),
+      title: title,
+      content: content,
+      date: Date.now(),
+    };
+  };
 
   const addNoteToLocalStorage = (note) => {
     localStorage.setItem(
