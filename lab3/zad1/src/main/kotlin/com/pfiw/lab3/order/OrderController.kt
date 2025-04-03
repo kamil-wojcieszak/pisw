@@ -8,21 +8,22 @@ import org.springframework.web.bind.annotation.*
 @RequestMapping("/order")
 class OrderController(
     val orderRepository: OrderRepository,
+    private val orderService: OrderService,
 ) {
     @PostMapping
-    fun addStock(@RequestBody order: Order): Order {
-        return orderRepository.save(order)
-    }
+    fun addStock(@RequestBody order: Order): Order = orderService.saveOrder(order)
 
 
     @PutMapping("/status/{id}")
-    fun addStock(
+    fun changeStatus(
         @PathVariable("id") id: Long,
         @RequestBody statusChangeRequest: StatusChangeRequest
-    ) {
-        orderRepository.save(
-            orderRepository.getReferenceById(id)
-                .apply { this.delivery.status = statusChangeRequest.status })
+    ) = orderService.changeStatus(id, statusChangeRequest.status)
 
-    }
+
+    @GetMapping("{id}")
+    fun getOrder(
+        @PathVariable("id") id: Long,
+    ): Order = orderService.getOrderById(id)
+
 }
