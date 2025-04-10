@@ -1,6 +1,5 @@
 package com.pfiw.lab3.order
 
-import com.pfiw.lab3.order.dto.CreateOrderHistoryRequest
 import com.pfiw.lab3.order.dto.StatusChangeRequest
 import com.pfiw.lab3.order.model.Order
 import org.springframework.http.MediaType
@@ -16,10 +15,10 @@ class OrderController(
 
     @PostMapping
     fun addStock(@RequestBody order: Order): Order =
-        orderService.saveOrder(order).also { o ->
+        orderService.saveOrder(order).also {
             restClient.post().uri("http://localhost:8081/order")
                 .contentType(MediaType.APPLICATION_JSON)
-                .body(o.toCreateOrderHistoryRequest())
+                .body(it.toCreateOrderHistoryRequest())
                 .retrieve()
                 .toBodilessEntity()
         }
