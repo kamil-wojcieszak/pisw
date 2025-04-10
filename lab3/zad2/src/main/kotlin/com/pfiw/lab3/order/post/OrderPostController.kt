@@ -14,7 +14,7 @@ class OrderPostController(
     fun createOrderHistory(@RequestBody order: OrderHistory): OrderHistory = orderHistoryService.saveOrder(order)
 
 
-    @PutMapping("/status/{id}")
+    @PatchMapping("/status/{id}")
     fun changeStatus(
         @PathVariable("id") id: Long,
         @RequestBody statusChangeRequest: StatusChangeRequest

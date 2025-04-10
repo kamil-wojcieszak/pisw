@@ -2,7 +2,8 @@ package com.pfiw.lab3
 
 import com.pfiw.lab3.order.OrderHistoryRepository
 import com.pfiw.lab3.order.OrderHistoryService
-import com.pfiw.lab3.order.model.OrderHistory 
+import com.pfiw.lab3.order.model.OrderHistory
+import jakarta.persistence.EntityNotFoundException
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.BeforeEach
@@ -70,13 +71,13 @@ class OrderHistoryServiceTest {
     }
 
     @Test
-    fun `getOrderById should throw NoSuchElementException when not found`() {
+    fun `getOrderById should throw EntityNotFoundException when not found`() {
         
         val orderId = 99L
         whenever(orderHistoryRepository.findById(orderId)).thenReturn(Optional.empty())
 
         
-        assertThrows(NoSuchElementException::class.java) {
+        assertThrows(EntityNotFoundException::class.java) {
             orderHistoryService.getOrderById(orderId)
         }
         verify(orderHistoryRepository).findById(orderId)

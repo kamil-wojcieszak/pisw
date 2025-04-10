@@ -17,6 +17,6 @@ class Order(
         courierName = this.delivery.courierName,
         deliveryStatus = this.delivery.status.toString(),
         productNames = this.items.joinToString(separator = ",") { it.product.name },
-        totalPrice = this.items.sumOf { it.product.price }.toDouble()
+        totalPrice = this.items.sumOf { it.product.price * it.quantity.toBigDecimal() }.toDouble()
     )
 }

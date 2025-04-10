@@ -24,13 +24,14 @@ class OrderController(
         }
 
 
-    @PutMapping("/status/{id}")
+    @PatchMapping("/status/{id}")
     fun changeStatus(
         @PathVariable("id") id: Long,
         @RequestBody statusChangeRequest: StatusChangeRequest
     ) = orderService.changeStatus(id, statusChangeRequest.status).also {
-        restClient.post()
-            .uri("localhost:8081/order/status/$id")
+        restClient.patch()
+            .uri("http://localhost:8081/order/status/$id")
+            .contentType(MediaType.APPLICATION_JSON)
             .body(statusChangeRequest.status.toString())
             .retrieve()
             .toBodilessEntity()
