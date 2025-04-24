@@ -5,15 +5,23 @@ import com.piisw.jpa.repositories.ServerRepository;
 import com.piisw.jpa.services.ServerService;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.TestConfiguration;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Bean;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
+import org.springframework.test.context.bean.override.mockito.MockitoBeans;
+import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
 
 import java.util.Optional;
 
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.mockito.Mockito.when;
 
 @DataJpaTest
 class Task5 {
@@ -21,7 +29,7 @@ class Task5 {
     @Autowired
     private ServerService serverService;
 
-    @Autowired // TODO: configure as mockrepository
+    @MockitoBean
     private ServerRepository serverRepositoryMock;
 
     @Test
@@ -43,7 +51,7 @@ class Task5 {
     }
 
     private void whenSerachingForNameReturn(String serverName, Server dummyServer) {
-        // TODO: add your mock definition here
+        when(serverRepositoryMock.findByName(serverName)).thenReturn(Optional.of(dummyServer));
     }
 
     @TestConfiguration
