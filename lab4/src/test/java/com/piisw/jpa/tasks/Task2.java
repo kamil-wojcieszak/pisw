@@ -1,9 +1,12 @@
 package com.piisw.jpa.tasks;
 
 import com.piisw.jpa.entities.Event;
+import com.piisw.jpa.repositories.EventRepository;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 
 import java.time.LocalDateTime;
@@ -15,6 +18,9 @@ import static org.hamcrest.Matchers.notNullValue;
 
 @DataJpaTest
 class Task2 {
+
+    @Autowired
+    private EventRepository eventRepository;
 
 
     @Test
@@ -28,7 +34,7 @@ class Task2 {
         Sort sort = Sort.unsorted();
 
         // when
-        Page<Event> result = null;
+        Page<Event> result = eventRepository.findByTimeBetweenAndAnalysisRequired(start, end, toBeAnalyzed, PageRequest.of(page, pageSize, sort));
 
         // then
         assertThat(result, is(notNullValue()));
@@ -46,13 +52,14 @@ class Task2 {
         Sort sort = Sort.by("time");
 
         // when
-        Page<Event> result = null;
+        Page<Event> result = eventRepository.findByTimeBetweenAndAnalysisRequired(start, end, toBeAnalyzed, PageRequest.of(page, pageSize, sort));
+
 
         // then
         assertThat(result, is(notNullValue()));
         assertThat(result.getNumber(), is(page));
         assertThat(result.getNumberOfElements(), is(9));
-        assertThat(result.getContent().get(8).getTime(), is(LocalDateTime.of(2018,12,9,17,25, 4)));
+        assertThat(result.getContent().get(8).getTime(), is(LocalDateTime.of(2018, 12, 9, 17, 25, 4)));
     }
 
     @Test
@@ -66,7 +73,8 @@ class Task2 {
         Sort sort = Sort.by("time");
 
         // when
-        Page<Event> result = null;
+        Page<Event> result = eventRepository.findByTimeBetweenAndAnalysisRequired(start, end, toBeAnalyzed, PageRequest.of(page, pageSize, sort));
+
 
         // then
         assertThat(result.getTotalElements(), is(0L));
