@@ -34,4 +34,13 @@ public interface EventRepository extends PagingAndSortingRepository<Event, Long>
     @Query("SELECT new com.piisw.jpa.repositories.ServerStatistic(e.server, COUNT(e)) FROM Event e GROUP BY e.server")
     List<ServerStatistic> countEventsByServer();
 
+    @Query(value = """
+            SELECT new com.piisw.jpa.repositories.FollowerEventInfoDTO(
+                        c.content, e.time, e.analysisRequired, c.content, f.subscriptionDate)
+                        FROM Event e
+                        JOIN e.comments c
+                        JOIN c.follower f
+                        WHERE f.userId = :userId
+            """)
+    List<FollowerEventInfoDTO> findEventInfoByFollowerUserId(@Param("userId") String userId);
 }

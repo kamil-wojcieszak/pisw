@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Getter
@@ -34,5 +35,8 @@ public abstract class Event {
 
     @Column
     private boolean analysisRequired;
+
+    @OneToMany(mappedBy = "id")
+    private List<Comment> comments;
 
 }
