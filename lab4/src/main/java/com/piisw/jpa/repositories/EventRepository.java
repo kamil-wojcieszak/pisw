@@ -12,6 +12,7 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public interface EventRepository extends PagingAndSortingRepository<Event, Long> {
 
@@ -24,7 +25,11 @@ public interface EventRepository extends PagingAndSortingRepository<Event, Long>
 
     @Modifying
     @Transactional
-    @Query("UPDATE Event e SET e.analysisRequired = true WHERE TYPE(e) = :clazz AND e.duration > :minDuration")
-    int updateInBulkToBeAnalyzedByType(@Param("clazz") Class<? extends Event> clazz, @Param("minDuration") int minDuration);
+    @Query("update Event e set e.analysisRequired = true where type(e) = :clazz and e.duration > :minDuration")
+    void updateInBulkToBeAnalyzedByType(@Param("clazz") Class<? extends Event> clazz, @Param("minDuration") int minDuration);
+
+
+    @Query("SELECT new com.piisw.jpa.repositories.ServerStatistic(e.server, COUNT(e)) FROM Event e GROUP BY e.server")
+    List<ServerStatistic> countEventsByServer();
 
 }

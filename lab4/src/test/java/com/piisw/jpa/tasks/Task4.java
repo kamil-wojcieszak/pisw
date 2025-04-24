@@ -1,7 +1,10 @@
 package com.piisw.jpa.tasks;
 
+import com.piisw.jpa.repositories.EventRepository;
 import com.piisw.jpa.repositories.ServerStatistic;
+import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import java.util.ArrayList;
@@ -16,6 +19,9 @@ import static org.hamcrest.Matchers.is;
 @DataJpaTest
 class Task4 {
 
+    @Autowired
+    private EventRepository eventRepository;
+
     @Test
     void shouldCountEventsByServer() throws Exception {
         // given ensured by script
@@ -24,7 +30,7 @@ class Task4 {
         long expectedServer_3 = 11;
 
         // when
-        List<ServerStatistic> result = new ArrayList<>();// replace by repository method call
+        List<ServerStatistic> result = eventRepository.countEventsByServer();// replace by repository method call
 
         // then
 
