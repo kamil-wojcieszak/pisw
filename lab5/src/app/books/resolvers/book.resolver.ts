@@ -7,6 +7,5 @@ export const bookResolver: ResolveFn<Book> = (
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot,
 ) => {
-    const bookId = Number(route.paramMap.get('bookId'));
-    return inject(BooksService).findBookByBookId(bookId);
+    return inject(BooksService).findBookByBookId(Number(route.paramMap.get('bookId')));
 };

@@ -1,7 +1,7 @@
 <article class="m-3">
-    <h2>List of all books</h2>
+    <h2>Szczegóły książki</h2>
     <section class="d-flex flex-column gap-2">
-        <a [routerLink]="['/books']" class="card-link">Back to List</a>
+        <a [routerLink]="['/books']" class="card-link">Powrót do listy</a>
         <div class="card">
             <div class="card-body">
                 <h5 class="card-title">{{ book.title }}</h5>
@@ -11,6 +11,14 @@
                 </p>
             </div>
         </div>
-
+        <div *ngIf="reviews && reviews.length > 0" class="mt-4">
+            <h3>Recenzje</h3>
+            <div *ngFor="let review of reviews">
+                <bs-review-item [review]="review"></bs-review-item>
+            </div>
+        </div>
+        <div *ngIf="!reviews || reviews.length === 0" class="mt-4">
+            <p>Brak recenzji dla tej książki.</p>
+        </div>
     </section>
 </article>
