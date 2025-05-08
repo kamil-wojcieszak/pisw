@@ -1,0 +1,80 @@
+<div *ngIf="editForm">
+    <form [formGroup]="editForm" (ngSubmit)="onSave()">
+        <div>
+            <label for="title">Tytuł:</label>
+            <input
+                    id="title"
+                    type="text"
+                    formControlName="title"
+                    required
+                    maxlength="50"
+                    [style.border-color]="title?.invalid && (title?.dirty || title?.touched) ? 'red' : null"
+            />
+            <div *ngIf="title?.invalid && (title?.dirty || title?.touched) && title?.errors?.['required']" style="color: red; font-size: 0.8em;">
+                Tytuł jest obowiązkowy.
+            </div>
+            <div *ngIf="title?.invalid && (title?.dirty || title?.touched) && title?.errors?.['maxlength']" style="color: red; font-size: 0.8em;">
+                Tytuł nie może być dłuższy niż 50 znaków.
+            </div>
+        </div>
+
+        <div>
+            <label for="author">Autor:</label>
+            <input
+                    id="author"
+                    type="text"
+                    formControlName="author"
+                    required
+                    maxlength="50"
+                    [style.border-color]="author?.invalid && (author?.dirty || author?.touched) ? 'red' : null"
+            />
+            <div *ngIf="author?.invalid && (author?.dirty || author?.touched) && author?.errors?.['required']" style="color: red; font-size: 0.8em;">
+                Autor jest obowiązkowy.
+            </div>
+            <div *ngIf="author?.invalid && (author?.dirty || author?.touched) && author?.errors?.['maxlength']" style="color: red; font-size: 0.8em;">
+                Autor nie może być dłuższy niż 50 znaków.
+            </div>
+        </div>
+
+        <div>
+            <label for="year">Rok wydania:</label>
+            <input
+                    id="year"
+                    type="number"
+                    formControlName="year"
+                    required
+                    min="1000"
+                    max="2023"
+                    [style.border-color]="year?.invalid && (year?.dirty || year?.touched) ? 'red' : null"
+            />
+            <div *ngIf="year?.invalid && (year?.dirty || year?.touched) && year?.errors?.['required']" style="color: red; font-size: 0.8em;">
+                Rok wydania jest obowiązkowy.
+            </div>
+            <div *ngIf="year?.invalid && (year?.dirty || year?.touched) && (year?.errors?.['min'] || year?.errors?.['max'])" style="color: red; font-size: 0.8em;">
+                Rok wydania musi być liczbą z zakresu 1000 - 2023.
+            </div>
+        </div>
+
+        <div>
+            <label for="description">Opis:</label>
+            <textarea
+                    id="description"
+                    formControlName="description"
+                    rows="5"
+                    maxlength="1000"
+                    [style.border-color]="description?.invalid && (description?.dirty || description?.touched) ? 'red' : null"
+            ></textarea>
+            <div *ngIf="description?.invalid && (description?.dirty || description?.touched) && description?.errors?.['maxlength']" style="color: red; font-size: 0.8em;">
+                Opis nie może być dłuższy niż 1000 znaków.
+            </div>
+        </div>
+
+        <div>
+            <button type="submit" [disabled]="editForm.invalid || isFormUnchanged()">Zapisz</button>
+            <button type="button" (click)="onCancel()">Anuluj</button>
+        </div>
+    </form>
+</div>
+<div *ngIf="!editForm">
+    Ładowanie formularza...
+</div>
